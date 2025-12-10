@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - Flask App{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Lista de Tareas</h1>
+    <a href="{{ url_for('agregar') }}" class="btn btn-primary">Nueva Tarea</a>
+</div>
+
+{% if tareas %}
+    <div class="tareas-list">
+        {% for tarea in tareas %}
+        <div class="tarea-card {% if tarea.completada %}completada{% endif %}">
+            <div class="tarea-content">
+                <h3>
+                    <a href="{{ url_for('ver_tarea', tarea_id=tarea.id) }}">
+                        {{ tarea.titulo }}
+                    </a>
+                </h3>
+                <span class="badge {% if tarea.completada %}badge-success{% else %}badge-warning{% endif %}">
+                    {% if tarea.completada %}Completada{% else %}Pendiente{% endif %}
+                </span>
+            </div>
+            <div class="tarea-actions">
+                <form method="POST" action="{{ url_for('completar_tarea', tarea_id=tarea.id) }}" style="display: inline;">
+                    <button type="submit" class="btn btn-sm">
+                        {% if tarea.completada %}Marcar Pendiente{% else %}Marcar Completada{% endif %}
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <p>No hay tareas aún. <a href="{{ url_for('agregar') }}">Agrega una nueva tarea</a></p>
+    </div>
+{% endif %}
+{% endblock %}
+

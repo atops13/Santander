@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}{{ tarea.titulo }} - Flask App{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>{{ tarea.titulo }}</h1>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Volver</a>
+</div>
+
+<div class="tarea-detail">
+    <div class="detail-item">
+        <strong>ID:</strong> {{ tarea.id }}
+    </div>
+    <div class="detail-item">
+        <strong>Estado:</strong>
+        <span class="badge {% if tarea.completada %}badge-success{% else %}badge-warning{% endif %}">
+            {% if tarea.completada %}Completada{% else %}Pendiente{% endif %}
+        </span>
+    </div>
+    
+    <div class="detail-actions">
+        <form method="POST" action="{{ url_for('completar_tarea', tarea_id=tarea.id) }}" style="display: inline;">
+            <button type="submit" class="btn btn-primary">
+                {% if tarea.completada %}Marcar como Pendiente{% else %}Marcar como Completada{% endif %}
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
